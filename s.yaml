@@ -40,7 +40,7 @@ services:
         caPort: 9000
         customRuntimeConfig:
           command:
-            - ./bootstrap
+            - ./scf_bootstrap
       triggers:
         - name: httpTrigger
           type: http
