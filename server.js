@@ -157,7 +157,8 @@ async function consturctServer(moduleDefs) {
   app.use((req, res, next) => {
     if (req.path !== '/' && !req.path.includes('.')) {
       res.set({
-        'Access-Control-Allow-Origin': req.headers.origin,
+        'Access-Control-Allow-Origin':
+          req.headers.origin || 'https://netease.etheral.cc',
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
         'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
