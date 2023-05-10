@@ -143,12 +143,13 @@ async function consturctServer(moduleDefs) {
     if (req.path !== '/' && !req.path.includes('.')) {
       res.set({
         'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Origin':
-          'https://netease.etheral.cc'||'http://127.0.0.1:3000'||'*',
+        'Access-Control-Allow-Origin': 'https://netease.etheral.cc',
         'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
         'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
         'Content-Type': 'application/json; charset=utf-8',
       })
+      res.setHeader('Access-Control-Allow-Origin','http://127.0.0.1:3000')
+      res.setHeader('Access-Control-Allow-Origin','*')
     }
     req.method === 'OPTIONS' ? res.status(204).end() : next()
   })
