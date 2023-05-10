@@ -5,6 +5,7 @@ const request = require('./util/request')
 const packageJSON = require('./package.json')
 const exec = require('child_process').exec
 const cache = require('./util/apicache').middleware
+const cors = require('cors')
 const { cookieToJson } = require('./util/index')
 const fileUpload = require('express-fileupload')
 const decode = require('safe-decode-uri-component')
@@ -148,12 +149,12 @@ async function consturctServer(moduleDefs) {
         'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
         'Content-Type': 'application/json; charset=utf-8',
       })
-      res.setHeader('Access-Control-Allow-Origin','http://127.0.0.1:3000')
       // res.setHeader('Access-Control-Allow-Origin','*')
     }
     req.method === 'OPTIONS' ? res.status(204).end() : next()
   })
-
+  app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+  app.use(cors({credentials: true, origin: 'https://netease.etheral.cc'}));
   /**
    * Cookie Parser
    */
