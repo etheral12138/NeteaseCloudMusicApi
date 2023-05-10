@@ -139,31 +139,34 @@ async function consturctServer(moduleDefs) {
   /**
    * CORS & Preflight request
    */
-  const allowedOrigins = ['http://127.0.0.1:3000', 'https://netease.etheral.cc'];
-  app.use((req, res, next) => {
-    const origin = req.headers.origin;
-    if (allowedOrigins.indexOf(origin) > -1) {
-      res.header('Access-Control-Allow-Origin', origin);
-      res.header('Access-Control-Allow-Credentials', true);
-      res.header('Access-Control-Allow-Headers','X-Requested-With,Content-Type')
-      res.header('Access-Control-Allow-Methods','PUT,POST,GET,DELETE,OPTIONS')
-      res.header('Content-Type', 'application/json; charset=utf-8')
-    }
-    req.method === 'OPTIONS' ? res.status(204).end() : next()
-  });
+  // const allowedOrigins = ['http://127.0.0.1:3000', 'https://netease.etheral.cc'];
   // app.use((req, res, next) => {
-  //   if (req.path !== '/' && !req.path.includes('.')) {
-  //     res.set({
-  //       'Access-Control-Allow-Credentials': true,
-  //       'Access-Control-Allow-Origin':
-  //         req.headers.origin || '*',
-  //       'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
-  //       'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
-  //       'Content-Type': 'application/json; charset=utf-8',
-  //     })
+  //   const origin = req.headers.origin;
+  //   if (allowedOrigins.indexOf(origin) > -1) {
+  //     res.header('Access-Control-Allow-Origin', origin);
+  //     res.header('Access-Control-Allow-Credentials', true);
+  //     res.header(
+  //       'Access-Control-Allow-Headers',
+  //       'X-Requested-With,Content-Type',
+  //     )
+  //     res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS')
+  //     res.header('Content-Type', 'application/json; charset=utf-8')
   //   }
   //   req.method === 'OPTIONS' ? res.status(204).end() : next()
   // })
+  app.use((req, res, next) => {
+    if (req.path !== '/' && !req.path.includes('.')) {
+      res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin':
+          CORS_ALLOW_ORIGIN || req.headers.origin || '*',
+        'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
+        'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
+        'Content-Type': 'application/json; charset=utf-8',
+      })
+    }
+    req.method === 'OPTIONS' ? res.status(204).end() : next()
+  })
 
   /**
    * Cookie Parser
