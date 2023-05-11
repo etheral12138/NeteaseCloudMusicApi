@@ -3,7 +3,7 @@ FROM node:lts-alpine
 RUN apk add --no-cache tini
 
 ENV NODE_ENV production
-USER node
+USER root
 
 WORKDIR /app
 
