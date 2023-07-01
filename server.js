@@ -158,7 +158,8 @@ async function consturctServer(moduleDefs) {
     if (req.path !== '/' && !req.path.includes('.')) {
       res.set({
         'Access-Control-Allow-Origin':
-          req.headers.origin || 'https://netease.etheral.cc' || '*',
+          req.headers.origin || CORS_ALLOW_ORIGIN || '*',
+        // req.headers.origin || 'https://netease.etheral.cc' || '*',
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
         'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
@@ -177,7 +178,7 @@ async function consturctServer(moduleDefs) {
     //;(req.headers.cookie || '').split(/\s*;\s*/).forEach((pair) => { //  Polynomial regular expression //
     ;(req.headers.cookie || '').split(/;\s+|(?<!\s)\s+$/g).forEach((pair) => {
       let crack = pair.indexOf('=')
-      if (crack < 1 || crack == pair.length - 1) return
+      if (crack < 1 || crack === pair.length - 1) return
       req.cookies[decode(pair.slice(0, crack)).trim()] = decode(
         pair.slice(crack + 1),
       ).trim()
@@ -242,7 +243,7 @@ async function consturctServer(moduleDefs) {
           const obj = [...params]
           let ip = req.ip
 
-          if (ip.substr(0, 7) == '::ffff:') {
+          if (ip.substr(0, 7) === '::ffff:') {
             ip = ip.substr(7)
           }
           // console.log(ip)
@@ -282,7 +283,7 @@ async function consturctServer(moduleDefs) {
           })
           return
         }
-        if (moduleResponse.body.code == '301')
+        if (moduleResponse.body.code === '301')
           moduleResponse.body.msg = '需要登录'
         res.append('Set-Cookie', moduleResponse.cookie)
         res.status(moduleResponse.status).send(moduleResponse.body)
@@ -305,7 +306,7 @@ async function serveNcmApi(options) {
   const checkVersionSubmission =
     options.checkVersion &&
     checkVersion().then(({ npmVersion, ourVersion, status }) => {
-      if (status == VERSION_CHECK_RESULT.NOT_LATEST) {
+      if (status === VERSION_CHECK_RESULT.NOT_LATEST) {
         console.log(
           `最新版本: ${npmVersion}, 当前版本: ${ourVersion}, 请及时更新`,
         )
